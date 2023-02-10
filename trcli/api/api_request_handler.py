@@ -325,7 +325,7 @@ class ApiRequestHandler:
                     elif int(test_case.case_id) not in all_case_ids:
                         nonexistent_ids.append(test_case.case_id)
             if missing_cases_number:
-                self.environment.log(f"Found {missing_cases_number} test cases without case ID in the report file.")
+                self.environment.log(f"[CHANGED]: Found test cases not matching any TestRail case (count: {missing_cases_number})")
             if nonexistent_ids:
                 self.environment.elog(f"Nonexistent case IDs found in the report file: {nonexistent_ids}")
                 return False, "Case IDs not in TestRail project or suite were detected in the report file."
@@ -341,10 +341,11 @@ class ApiRequestHandler:
         add_case_data = self.data_provider.add_cases()
         responses = []
         error_message = ""
+        self.environment.log("[NYLA]: Running customized add_cases 1 at a time to preven sequence issues")
         with self.environment.get_progress_bar(
             results_amount=len(add_case_data), prefix="Adding test cases"
         ) as progress_bar:
-            with ThreadPoolExecutor(max_workers=MAX_WORKERS_ADD_CASE) as executor:
+            with ThreadPoolExecutor(max_workers=1) as executor:
                 futures = {
                     executor.submit(
                         self._add_case_and_update_data,

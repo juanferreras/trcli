@@ -63,7 +63,7 @@ PROMPT_MESSAGES = dict(
 )
 
 TOOL_VERSION = f"""TestRail CLI v{trcli.__version__}
-Copyright 2021 Gurock Software GmbH - www.gurock.com"""
+[NYLA] Copyright 2021 Gurock Software GmbH - www.gurock.com"""
 TOOL_USAGE = f"""Supported and loaded modules:
     - parse_junit: JUnit XML Files (& Similar)"""
 
